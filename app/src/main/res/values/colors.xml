@@ -10,5 +10,6 @@
     <color name="Primary">#0097b2</color>
     <color name="Secondary">#b30050</color>
     <color name="Tertiary">#b3a000</color>
+    <color name="BrokenWhite">#dcdcdc</color>
 
 </resources>

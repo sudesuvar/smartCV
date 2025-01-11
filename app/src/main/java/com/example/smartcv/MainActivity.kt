@@ -4,22 +4,33 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.smartcv.ui.theme.SmartCVTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.smartcv.AuthScreens.ForgotPasswordScreen
+import com.example.smartcv.AuthScreens.LoginScreen
+import com.example.smartcv.AuthScreens.SignupScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            //LoginScreen()
-            ForgotPasswordScreen()
+            val navController = rememberNavController()
+            NavHost(navController = navController, startDestination = Routes.loginScreen, builder ={
+                composable(Routes.loginScreen,){
+                    LoginScreen(navController)
+                }
+                composable(Routes.signupScreen,){
+                    SignupScreen(navController)
+                }
+                composable(Routes.forgotPasswordScreen,){
+                    ForgotPasswordScreen(navController)
+                }
+                composable(Routes.mainScreen,){
+                  MainScreen()
+                }
+            })
         }
     }
 }
