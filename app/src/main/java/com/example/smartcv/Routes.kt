@@ -9,5 +9,6 @@ object Routes {
     var profilePage = "profile"
     var homePage = "home"
     var cvListPage = "cvList"
+    var personalPage = "personal"
 
 }

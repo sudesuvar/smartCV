@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "619161109804",
+    "project_id": "smartcv-c39f6",
+    "storage_bucket": "smartcv-c39f6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619161109804:android:8445408e4e82a1b847d889",
+        "android_client_info": {
+          "package_name": "com.example.smartcv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmGRd8E8fopCsIZmRa6ijm_EVH_2_SlUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
