@@ -48,10 +48,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartcv.R
+import com.example.smartcv.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfilePage() {
+fun ProfilePage(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().paint(
             painterResource(id = R.drawable.background),
@@ -109,7 +110,13 @@ fun ProfilePage() {
 
         Spacer(modifier =  Modifier.height(16.dp))
 
-        TextButton(onClick ={},
+        TextButton(onClick ={
+            try {
+                navController.navigate(Routes.personalPage)
+            } catch (e: Exception) {
+                println("Exception occurred: ${e.message}")
+            }
+        },
             colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(R.color.BrokenWhite),
             contentColor = colorResource(R.color.black)),
@@ -139,7 +146,9 @@ fun ProfilePage() {
 
         Spacer(modifier =  Modifier.height(16.dp))
 
-        TextButton(onClick ={},
+        TextButton(onClick ={
+            navController.navigate(Routes.educationPage)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.BrokenWhite),
                 contentColor = colorResource(R.color.black)),
@@ -169,7 +178,9 @@ fun ProfilePage() {
 
         Spacer(modifier =  Modifier.height(16.dp))
 
-        TextButton(onClick ={},
+        TextButton(onClick ={
+            navController.navigate(Routes.experiencePage)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.BrokenWhite),
                 contentColor = colorResource(R.color.black)),
@@ -199,7 +210,9 @@ fun ProfilePage() {
 
         Spacer(modifier =  Modifier.height(16.dp))
 
-        TextButton(onClick ={},
+        TextButton(onClick ={
+            navController.navigate(Routes.languagePage)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.BrokenWhite),
                 contentColor = colorResource(R.color.black)),
@@ -229,7 +242,9 @@ fun ProfilePage() {
 
         Spacer(modifier =  Modifier.height(16.dp))
 
-        TextButton(onClick ={},
+        TextButton(onClick ={
+            navController.navigate(Routes.skillPage)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.BrokenWhite),
                 contentColor = colorResource(R.color.black)),
@@ -246,7 +261,7 @@ fun ProfilePage() {
             ) {
                 Icon(
                     Icons.Default.Build,
-                    contentDescription = "LanguageIcon",
+                    contentDescription = "Skill Icon",
                     tint = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -259,7 +274,9 @@ fun ProfilePage() {
 
         Spacer(modifier =  Modifier.height(16.dp))
 
-        TextButton(onClick ={},
+        TextButton(onClick ={
+            navController.navigate(Routes.contactPage)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.BrokenWhite),
                 contentColor = colorResource(R.color.black)),
@@ -289,7 +306,9 @@ fun ProfilePage() {
 
         Spacer(modifier =  Modifier.height(16.dp))
 
-        TextButton(onClick ={},
+        TextButton(onClick ={
+            navController.navigate(Routes.referencePage)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.BrokenWhite),
                 contentColor = colorResource(R.color.black)),

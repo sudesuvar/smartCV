@@ -1,5 +1,6 @@
 package com.example.smartcv.pages
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import com.example.smartcv.R
 @Composable
 fun PersonalPage(navController: NavController){
     BottomAppBar(
+        modifier = Modifier.background(colorResource(R.color.Primary)),
         actions = {
             Row(
                 modifier = Modifier.fillMaxWidth(),

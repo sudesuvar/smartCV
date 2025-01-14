@@ -17,14 +17,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.smartcv.pages.CvListPage
 import com.example.smartcv.pages.HomePage
 import com.example.smartcv.pages.ProfilePage
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier){
-    val navController = rememberNavController()
+fun MainScreen(modifier: Modifier = Modifier, navController: NavController){
+    //val navController = rememberNavController()
     val navItemLists = listOf(
         NavItem( "CV", Icons.Default.AddCircle),
         NavItem( "Home", Icons.Default.Home),
@@ -50,16 +51,16 @@ fun MainScreen(modifier: Modifier = Modifier){
             }
         }
         ) {innerPadding ->
-            ContentScreen(modifier = Modifier.padding(innerPadding),selectedIndex)
+            ContentScreen(modifier = Modifier.padding(innerPadding),selectedIndex,navController = navController)
     }
 }
 
 @Composable
-fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int) {
+fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int,navController: NavController) {
     when(selectedIndex){
         0 -> CvListPage()
         1 -> HomePage()
-        2 -> ProfilePage()
+        2 -> ProfilePage(navController)
     }
 }
 
