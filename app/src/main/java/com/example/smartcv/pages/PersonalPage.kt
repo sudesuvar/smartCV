@@ -1,46 +1,332 @@
 package com.example.smartcv.pages
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.BottomAppBar
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartcv.R
+import com.example.smartcv.Routes
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PersonalPage(navController: NavController){
-    BottomAppBar(
-        modifier = Modifier.background(colorResource(R.color.Primary)),
-        actions = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
+fun PersonalPage(navController: NavController,
+                 onDateSelected: (Long?) -> Unit,
+                 onDismiss: () -> Unit) {
+
+    val datePickerState = rememberDatePickerState()
+    val showDatePicker = remember { mutableStateOf(false) }
+    val selectedGender = remember { mutableStateOf<String?>(null) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .paint(
+                painterResource(id = R.drawable.background),
+                contentScale = ContentScale.FillBounds
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(modifier = Modifier.height(32.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {
+                    //navController.popBackStack()
+                },
             ) {
-                Spacer(modifier = Modifier.height(12.dp))
-                IconButton(onClick = { /* doSomething() */ }) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "Localized description")
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+            Text("Kişisel Bilgiler")
+        }
+
+        Box(
+            modifier = Modifier
+                .width(300.dp)
+                .wrapContentHeight()
+                .background(color = colorResource(R.color.Primary), shape = RoundedCornerShape(16.dp))
+                .padding(16.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(start = 25.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(96.dp)
+                        .clip(CircleShape)
+                        .background(Color.LightGray)
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.profile),
+                        contentDescription = "Profile Image",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    // GÖRÜNMÜYOORRRR İCONNNNN
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit Icon",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(36.dp)
+                            .align(Alignment.BottomEnd)
+                            .background(colorResource(R.color.Secondary), CircleShape)
+                        .padding(vertical = 8.dp)
+                    )
+
                 }
-                Text(text = "Kişisel Bilgiler", fontWeight = FontWeight.Bold)
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "Bu fotoğrafı Cv'ne de ekleyebilirsin.",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
             }
         }
-    )
-}
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                label = { Text(text = "İsim") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "name icon"
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    unfocusedBorderColor = colorResource(R.color.Secondary)
+                ),
+            )
+            Spacer(modifier =  Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                label = { Text(text = "Soyisim") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "surname icon"
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    unfocusedBorderColor = colorResource(R.color.Secondary)
+                ),
+            )
+            Spacer(modifier =  Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                label = { Text(text = "Telefon") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Phone,
+                        contentDescription = "telephone icon"
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    unfocusedBorderColor = colorResource(R.color.Secondary)
+                ),
+            )
+            Spacer(modifier =  Modifier.height(8.dp))
+
+            Button(
+                onClick = { showDatePicker.value = true },
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .padding(vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.Secondary),
+                    contentColor = colorResource(R.color.white)
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "telephone icon"
+                )
+                Spacer(modifier =  Modifier.width(3.dp))
+                Text(
+                    text = "Doğum Tarihini Seç",
+                    fontSize = 16.sp
+                )
+            }
+
+            Spacer(modifier =  Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+
+                AssistChip(
+                    onClick = { selectedGender.value = "Erkek" },
+                    label = { Text("Erkek") },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Person,
+                            contentDescription = "Localized description",
+                            Modifier.size(AssistChipDefaults.IconSize)
+                        )
+                    },
+                    colors = AssistChipDefaults.assistChipColors(
+                        containerColor = if (selectedGender.value == "Erkek") colorResource(id = R.color.Primary) else Color.Transparent
+                    ),
+
+                )
+                AssistChip(
+                    onClick = { selectedGender.value = "Kadın" },
+                    label = { Text("Kadın") },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Person,
+                            contentDescription = "Localized description",
+                            Modifier.size(AssistChipDefaults.IconSize)
+                        )
+                    },
+                    colors = AssistChipDefaults.assistChipColors(
+                        containerColor = if (selectedGender.value == "Kadın") colorResource(id = R.color.Primary) else Color.Transparent
+                    ),
+
+                )
+                AssistChip(
+                    onClick = { selectedGender.value = "Diğer" },
+                    label = { Text("Diğer") },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Face,
+                            contentDescription = "Localized description",
+                            Modifier.size(AssistChipDefaults.IconSize)
+                        )
+                    },
+                    colors = AssistChipDefaults.assistChipColors(
+                        containerColor = if (selectedGender.value == "Diğer") colorResource(id = R.color.Primary) else Color.Transparent
+                    ),
+                )
+
+
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            //Text("Seçilen Cinsiyet: ${selectedGender.value ?: "Henüz seçilmedi"}")
+
+            Button(onClick ={
+                //Log.i("Credential", "Email : $email Password : $password")
+                //navController.navigate(Routes.mainScreen)
+            },  colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(R.color.Secondary),
+                contentColor = colorResource(R.color.white)),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .padding(horizontal = 50.dp)
+                    .height(50.dp)) {
+                Text(text = "Kaydet", fontSize = 16.sp)
+            }
+        }
+
+
+        }
+
+        if (showDatePicker.value) {
+            DatePickerDialog(
+                onDismissRequest = { showDatePicker.value = false }, // Hide dialog on dismiss
+                confirmButton = {
+                    TextButton(onClick = {
+                        onDateSelected(datePickerState.selectedDateMillis)
+                        showDatePicker.value = false // Hide dialog on confirm
+                    }) {
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDatePicker.value = false }) {
+                        Text("Cancel")
+                    }
+                }
+            ) {
+                DatePicker(state = datePickerState)
+            }
+        }
+
+    }
+

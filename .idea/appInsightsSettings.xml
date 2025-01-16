@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.smartcv" />
+                  <option name="mobileSdkAppId" value="1:619161109804:android:8445408e4e82a1b847d889" />
+                  <option name="projectId" value="smartcv-c39f6" />
+                  <option name="projectNumber" value="619161109804" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -39,7 +39,17 @@ class MainActivity : ComponentActivity() {
                     MainScreen(navController = navController)
                 }
                 composable(Routes.personalPage,){
-                    PersonalPage(navController)
+                    PersonalPage(
+                        navController,
+                        onDateSelected = { selectedDate ->
+                            // For now, just print or log the selected date
+                            println("Selected date: $selectedDate")
+                        },
+                        onDismiss = {
+                            // For now, just pop the back stack or dismiss the page
+                            navController.navigate(Routes.personalPage)
+                        }
+                    )
                 }
                 composable(Routes.educationPage,) {
                     EducationPage(navController)
