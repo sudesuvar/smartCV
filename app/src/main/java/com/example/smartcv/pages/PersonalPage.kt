@@ -234,6 +234,7 @@ fun PersonalPage(navController: NavController,
             }
 
             Spacer(modifier =  Modifier.height(16.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -283,9 +284,8 @@ fun PersonalPage(navController: NavController,
                         containerColor = if (selectedGender.value == "Diğer") colorResource(id = R.color.Primary) else Color.Transparent
                     ),
                 )
-
-
             }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             //Text("Seçilen Cinsiyet: ${selectedGender.value ?: "Henüz seçilmedi"}")

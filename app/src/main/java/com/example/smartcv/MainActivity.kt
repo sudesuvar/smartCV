@@ -52,7 +52,14 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 composable(Routes.educationPage,) {
-                    EducationPage(navController)
+                    EducationPage(
+                        navController,
+                        onDateSelected = { startDate, endDate ->
+                        },
+                        onDismiss = {
+                            navController.navigate(Routes.personalPage)
+                        }
+                    )
                 }
                 composable(Routes.experiencePage,) {
                     ExperiencePage(navController)
