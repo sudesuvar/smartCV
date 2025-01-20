@@ -18,6 +18,7 @@ import com.example.smartcv.pages.PersonalPage
 import com.example.smartcv.pages.ReferencePage
 import com.example.smartcv.pages.SettingPage
 import com.example.smartcv.pages.SkillPage
+import com.example.smartcv.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +28,10 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = Routes.loginScreen, builder ={
                 composable(Routes.loginScreen,){
-                    LoginScreen(navController)
+                    LoginScreen(navController, viewModel = AuthViewModel())
                 }
                 composable(Routes.signupScreen,){
-                    SignupScreen(navController)
+                    SignupScreen(navController, viewModel = AuthViewModel())
                 }
                 composable(Routes.forgotPasswordScreen,){
                     ForgotPasswordScreen(navController)

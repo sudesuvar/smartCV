@@ -1,5 +1,6 @@
 package com.example.smartcv.AuthScreens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,10 +26,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,13 +41,30 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartcv.R
 import com.example.smartcv.Routes
+import com.example.smartcv.viewmodel.AuthState
+import com.example.smartcv.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(navController: NavController, viewModel: AuthViewModel){
 
+    val authState = viewModel.authState.observeAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    LaunchedEffect(authState.value) {
+        when (val currentState = authState.value) {
+            is AuthState.Authenticated -> {
+                navController.navigate(Routes.mainScreen)
+            }
+            is AuthState.Error -> {
+                Toast.makeText(context, currentState.message, Toast.LENGTH_SHORT).show()
+            }
+            else -> Unit // Başka bir durum için işlem yapılmıyor
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().paint(
@@ -101,7 +121,7 @@ fun LoginScreen(navController: NavController){
 
         Button(onClick ={
             //Log.i("Credential", "Email : $email Password : $password")
-            navController.navigate(Routes.mainScreen)
+            viewModel.login(email, password)
         },  colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(R.color.Secondary),
             contentColor = colorResource(R.color.white)),
