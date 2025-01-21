@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.smartcv.pages.CvListPage
 import com.example.smartcv.pages.HomePage
 import com.example.smartcv.pages.ProfilePage
+import com.example.smartcv.viewmodel.AuthViewModel
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, navController: NavController){
@@ -60,7 +61,7 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int,navControlle
     when(selectedIndex){
         0 -> CvListPage()
         1 -> HomePage()
-        2 -> ProfilePage(navController)
+        2 -> ProfilePage(navController, viewModel = AuthViewModel())
     }
 }
 

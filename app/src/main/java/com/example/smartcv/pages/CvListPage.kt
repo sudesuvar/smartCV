@@ -15,10 +15,7 @@ import com.example.smartcv.R
 @Composable
 fun CvListPage(){
     Column(
-        modifier = Modifier.fillMaxSize().paint(
-            painterResource(id = R.drawable.background),
-            contentScale = ContentScale.FillBounds
-        ),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 

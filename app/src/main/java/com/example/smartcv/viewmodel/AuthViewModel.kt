@@ -4,10 +4,12 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AuthViewModel {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
@@ -18,7 +20,6 @@ class AuthViewModel {
 
     fun checkAuthStatus(){
         if(auth.currentUser == null){
-
             _authState.value = AuthState.UnAuthenticated
         }else{
             _authState.value = AuthState.Authenticated
@@ -28,7 +29,7 @@ class AuthViewModel {
     fun login(email: String, password: String) {
 
         if (email.isEmpty() || password.isEmpty()) {
-            _authState.value = AuthState.Error("Email and password cannot be empty")
+            _authState.value = AuthState.Error("Email ve Şifre boş olamaz")
             return
         }
 
@@ -38,7 +39,7 @@ class AuthViewModel {
                 if (task.isSuccessful) {
                     _authState.value = AuthState.Authenticated
                 } else {
-                    _authState.value = AuthState.Error(task.exception?.message ?: "Login failed")
+                    _authState.value = AuthState.Error(task.exception?.message ?: "Giriş Başarısız")
                 }
             }
     }
@@ -54,11 +55,27 @@ class AuthViewModel {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    _authState.value = AuthState.Authenticated
+                    val currentUser = auth.currentUser
+                    currentUser?.let {
+                        val user = mapOf(
+                            "uid" to it.uid,
+                            "email" to email
+                        )
+
+                        firestore.collection("users").document(it.uid).set(user)
+                            .addOnSuccessListener {
+                                _authState.value = AuthState.Authenticated
+                            }
+                            .addOnFailureListener { exception ->
+                                _authState.value = AuthState.Error("Failed to save user: ${exception.message}")
+                            }
+                    }
                 } else {
-                    _authState.value = AuthState.Error(task.exception?.message ?: "Login failed")
+                    _authState.value = AuthState.Error(task.exception?.message ?: "Signup failed")
                 }
             }
+
+
     }
 
     fun signout(){

@@ -49,10 +49,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartcv.R
 import com.example.smartcv.Routes
+import com.example.smartcv.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfilePage(navController: NavController) {
+fun ProfilePage(navController: NavController, viewModel: AuthViewModel) {
     Column(
         modifier = Modifier.fillMaxSize().paint(
             painterResource(id = R.drawable.background),
@@ -369,6 +370,8 @@ fun ProfilePage(navController: NavController) {
         Spacer(modifier =  Modifier.height(16.dp))
 
         Button(onClick ={
+            viewModel.signout()
+            navController.navigate(Routes.loginScreen)
         },  colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(R.color.Primary),
             contentColor = colorResource(R.color.black)),
