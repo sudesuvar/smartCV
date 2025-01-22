@@ -1,6 +1,7 @@
 package com.example.smartcv.pages
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,14 +42,19 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -58,16 +64,37 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartcv.R
 import com.example.smartcv.Routes
+import com.example.smartcv.viewmodel.InformationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PersonalPage(navController: NavController,
                  onDateSelected: (Long?) -> Unit,
-                 onDismiss: () -> Unit) {
+                 onDismiss: () -> Unit,
+                 viewModel: InformationViewModel) {
 
     val datePickerState = rememberDatePickerState()
     val showDatePicker = remember { mutableStateOf(false) }
     val selectedGender = remember { mutableStateOf<String?>(null) }
+
+    var name by remember { mutableStateOf("") }
+    var surname by remember { mutableStateOf("") }
+    var telephone by remember { mutableStateOf("") }
+    var birthDate by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    val saveStatus by viewModel.saveStatus.observeAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(saveStatus) {
+        saveStatus?.let { success ->
+            val message = if (success) {
+                "Bilgiler başarıyla kaydedildi."
+            } else {
+                "Bilgiler kaydedilirken bir hata oluştu."
+            }
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -151,8 +178,8 @@ fun PersonalPage(navController: NavController,
         ) {
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = name,
+                onValueChange = {name = it},
                 label = { Text(text = "İsim") },
                 leadingIcon = {
                     Icon(
@@ -170,8 +197,8 @@ fun PersonalPage(navController: NavController,
             Spacer(modifier =  Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = surname,
+                onValueChange = {surname = it},
                 label = { Text(text = "Soyisim") },
                 leadingIcon = {
                     Icon(
@@ -189,8 +216,8 @@ fun PersonalPage(navController: NavController,
             Spacer(modifier =  Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = telephone,
+                onValueChange = {telephone = it},
                 label = { Text(text = "Telefon") },
                 leadingIcon = {
                     Icon(
@@ -284,11 +311,14 @@ fun PersonalPage(navController: NavController,
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            //Text("Seçilen Cinsiyet: ${selectedGender.value ?: "Henüz seçilmedi"}")
-
             Button(onClick ={
-                //Log.i("Credential", "Email : $email Password : $password")
-                //navController.navigate(Routes.mainScreen)
+                viewModel.personalInformation(
+                    name = name,
+                    surname = surname,
+                    telephone = telephone,
+                    birthDate = birthDate,
+                    gender = selectedGender.value
+                )
             },  colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.Secondary),
                 contentColor = colorResource(R.color.white)),
@@ -305,18 +335,20 @@ fun PersonalPage(navController: NavController,
 
         if (showDatePicker.value) {
             DatePickerDialog(
-                onDismissRequest = { showDatePicker.value = false }, // Hide dialog on dismiss
+                onDismissRequest = { showDatePicker.value = false },
                 confirmButton = {
                     TextButton(onClick = {
-                        onDateSelected(datePickerState.selectedDateMillis)
-                        showDatePicker.value = false // Hide dialog on confirm
+                        birthDate = datePickerState.selectedDateMillis?.let {
+                            java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(it)
+                        } ?: ""
+                        showDatePicker.value = false
                     }) {
-                        Text("OK")
+                        Text("Tamam")
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showDatePicker.value = false }) {
-                        Text("Cancel")
+                        Text("Geri")
                     }
                 }
             ) {

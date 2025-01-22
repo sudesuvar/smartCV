@@ -19,6 +19,7 @@ import com.example.smartcv.pages.ReferencePage
 import com.example.smartcv.pages.SettingPage
 import com.example.smartcv.pages.SkillPage
 import com.example.smartcv.viewmodel.AuthViewModel
+import com.example.smartcv.viewmodel.InformationViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +50,8 @@ class MainActivity : ComponentActivity() {
                         onDismiss = {
                             // For now, just pop the back stack or dismiss the page
                             navController.navigate(Routes.personalPage)
-                        }
+                        },
+                        viewModel = InformationViewModel()
                     )
                 }
                 composable(Routes.educationPage,) {

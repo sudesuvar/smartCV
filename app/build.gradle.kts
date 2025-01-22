@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,10 +69,17 @@ dependencies {
 
     val nav_version = "2.8.5"
     implementation("androidx.navigation:navigation-compose:$nav_version")
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    implementation ("com.google.firebase:firebase-auth:23.1.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation (libs.firebase.auth)
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
+
+
 
 }
 

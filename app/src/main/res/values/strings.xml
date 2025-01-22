@@ -1,3 +1,12 @@
-<resources>
-    <string name="app_name">smartCV</string>
+<resources>   <string name="app_name">SmartCV</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="search">Search..</string>
+    <string name="choose">Choose a Category</string>
+    <string name="all">All</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+
 </resources>
