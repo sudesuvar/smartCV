@@ -137,7 +137,7 @@ fun CvListPage() {
             CategoryButton("Hepsi", selectedCategory, Color.Gray) { selectedCategory = "Hepsi" }
             CategoryButton("Soft", selectedCategory, Color(0xFFa40000)) { selectedCategory = "Soft" }
             CategoryButton("Dinamik", selectedCategory, Color(0xFF008b00)) { selectedCategory = "Dinamik" }
-            //CategoryButton("Yetkin", selectedCategory, Color(0xFF0961B6)) { selectedCategory = "Yetkin" }
+            //CategoryButton("Yetkin", sjelectedCategory, Color(0xFF0961B6)) { selectedCategory = "Yetkin" }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -148,6 +148,8 @@ fun CvListPage() {
                 .padding(bottom = 12.dp)
                 .shadow(8.dp, shape = RoundedCornerShape(16.dp)),
             shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.Secondary)),
         ) {
             Row(
                 modifier = Modifier
@@ -208,6 +210,8 @@ fun CvListPage() {
                 .padding(bottom = 12.dp)
                 .shadow(8.dp, shape = RoundedCornerShape(16.dp)),
                 shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.Secondary)),
         ) {
             Row(
                 modifier = Modifier
@@ -268,6 +272,9 @@ fun CvListPage() {
                 .padding(bottom = 12.dp)
                 .shadow(8.dp, shape = RoundedCornerShape(16.dp)),
             shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.Secondary)
+            ),
         ) {
             Row(
                 modifier = Modifier
@@ -350,8 +357,10 @@ fun SearchBar(searchText: String, onSearchTextChanged: (String) -> Unit, modifie
         },
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        )
+            unfocusedIndicatorColor = Color.Transparent,
+            containerColor = colorResource(R.color.Secondary),
+        ),
+
     )
 }
 

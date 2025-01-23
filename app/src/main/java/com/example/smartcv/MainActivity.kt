@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                     ExperiencePage(navController)
                 }
                 composable(Routes.languagePage,) {
-                    LanguagePage(navController)
+                    LanguagePage(navController,  viewModel = InformationViewModel())
                 }
                 composable(Routes.skillPage,) {
                     SkillPage(navController)

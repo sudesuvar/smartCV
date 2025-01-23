@@ -1,6 +1,7 @@
 package com.example.smartcv.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,8 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.tasks.await
 
 
 class InformationViewModel: ViewModel() {
@@ -20,6 +23,10 @@ class InformationViewModel: ViewModel() {
 
     private val _saveStatus = MutableLiveData<Boolean>()
     val saveStatus: LiveData<Boolean> get() = _saveStatus
+
+    // 'selectedLanguages' yerine 'allLanguages' StateFlow oluşturuyoruz
+    private val _allLanguages = MutableStateFlow<List<Pair<String, String>>>(emptyList())
+    val allLanguages: StateFlow<List<Pair<String, String>>> = _allLanguages
 
     fun personalInformation(name: String, surname: String, telephone: String, birthDate: String, gender: String?){
         viewModelScope.launch {
@@ -50,4 +57,49 @@ class InformationViewModel: ViewModel() {
             }
         }
     }
+
+    fun LanguageInformation(languages: List<Pair<String, String>>) {
+        viewModelScope.launch {
+            val userId = auth.currentUser?.uid
+            if (userId != null) {
+
+                val userDoc = firestore.collection("users").document(userId).get().await()
+
+                if (userDoc.exists()) {
+
+                    val existingLanguages = userDoc.get("languages") as? List<Map<String, String>> ?: emptyList()
+
+                    // Yeni dil bilgilerini mevcut dil bilgilerine ekle
+                    val updatedLanguages = existingLanguages.toMutableList().apply {
+                        languages.forEach { newLang ->
+                            // Eğer dil zaten mevcutsa, tekrar ekleme
+                            val exists = any { it["language"] == newLang.first }
+                            if (!exists) {
+                                add(mapOf("language" to newLang.first, "level" to newLang.second))
+                            }
+                        }
+                    }
+
+                    // Güncellenmiş dil bilgilerini Firestore'a kaydet
+                    val languageData = mapOf("languages" to updatedLanguages)
+
+                    firestore.collection("users")
+                        .document(userId)
+                        .set(languageData, SetOptions.merge())  // Mevcut veriye ekler
+                        .addOnSuccessListener {
+                            Log.d("Firestore", "Dil bilgisi başarıyla kaydedildi.")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("Firestore", "Dil bilgisi kaydedilemedi.", e)
+                        }
+                } else {
+                    Log.e("Firestore", "Kullanıcı verisi bulunamadı.")
+                }
+            } else {
+                Log.e("Auth", "Kullanıcı giriş yapmamış.")
+            }
+        }
+    }
+
+
 }

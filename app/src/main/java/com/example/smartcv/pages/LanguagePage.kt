@@ -1,5 +1,7 @@
 package com.example.smartcv.pages
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -37,7 +41,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -45,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -52,19 +60,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartcv.R
+import com.example.smartcv.viewmodel.InformationViewModel
 
 
 @Composable
-fun LanguagePage(navController: NavController){
+fun LanguagePage(navController: NavController, viewModel: InformationViewModel){
 
 
     var dropControl = remember { mutableStateOf(false) }
     var selectIndex = remember { mutableIntStateOf(0) }
     val languageList = listOf("İngilizce", "İspanyolca", "Almanca", "Fransızca", "İtalyanca", "Arapça", "Rusça","Türkçe")
     val selectedLevel = remember { mutableStateOf<String?>(null) }
-
-
-    var checked = remember { mutableStateOf(true) }
+    val selectedLanguages = remember { mutableStateListOf<Pair<String, String>>() }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -177,6 +185,20 @@ fun LanguagePage(navController: NavController){
 
             Button(
                 onClick = {
+                    val selectedLanguage = languageList[selectIndex.value]
+                    val selectedLevelValue = selectedLevel.value
+
+                    if (selectedLevelValue != null) {
+                        if (selectedLanguages.any { it.first == selectedLanguage }) {
+                            Toast.makeText(context, "Bu dili zaten seçtiniz!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            selectedLanguages.add(selectedLanguage to selectedLevelValue)
+                            viewModel.LanguageInformation(selectedLanguages)
+                            Toast.makeText(context, "Dil kaydedildi.", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(context, "Lütfen bir dil seviyesi seçin.", Toast.LENGTH_SHORT).show()
+                    }
 
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -190,10 +212,11 @@ fun LanguagePage(navController: NavController){
             ) {
                 Text(text = "Kaydet", fontSize = 16.sp)
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
         }
     }
-
-
-
 
 }

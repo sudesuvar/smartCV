@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,8 +42,10 @@ import com.example.smartcv.viewmodel.AuthViewModel
 @Composable
 fun ProfilePage(navController: NavController, viewModel: AuthViewModel) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
     ) {
+        // Üst Profil Alanı
         Row (
             modifier = Modifier.fillMaxWidth()
                 .background(colorResource(R.color.Secondary))
@@ -75,243 +79,138 @@ fun ProfilePage(navController: NavController, viewModel: AuthViewModel) {
             }
 
         }
-        //Spacer(modifier =  Modifier.height(16.dp))
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+        // Kaydırılabilir İçerik
+        LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp)
-        ){
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.personal),
-                    contentDescription = "Personal Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable { navController.navigate(Routes.personalPage)})
-
-                Text(text = "Kişisel Bilgiler",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.education),
-                    contentDescription = "Education Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  navController.navigate(Routes.educationPage) })
-
-                Text(text = "Eğitim Bilgileri",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
+                .fillMaxSize()
+                .padding(16.dp),
+                //.background(colorResource(R.color.white)),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(bottom = 16.dp)
+        ) {
+            // İlk Grup
+            item {
+                ProfileItemRow(
+                    navController = navController,
+                    items = listOf(
+                        ProfileItem("Kişisel Bilgiler", R.drawable.personal, Routes.personalPage),
+                        ProfileItem("Eğitim Bilgileri", R.drawable.education, Routes.educationPage)
+                    )
                 )
             }
 
-
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-        ){
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.experience),
-                    contentDescription = "ExperienceImage",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  navController.navigate(Routes.experiencePage) })
-
-                Text(text = "Deneyim",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.language),
-                    contentDescription = "Language Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  navController.navigate(Routes.languagePage) })
-
-                Text(text = "Yabancı Diller",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
+            // İkinci Grup
+            item {
+                ProfileItemRow(
+                    navController = navController,
+                    items = listOf(
+                        ProfileItem("Deneyim", R.drawable.experience, Routes.experiencePage),
+                        ProfileItem("Yabancı Diller", R.drawable.language, Routes.languagePage)
+                    )
                 )
             }
 
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-        ){
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.skiils),
-                    contentDescription = "Skiils Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  navController.navigate(Routes.experiencePage) })
-
-                Text(text = "Yetkinlikler",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
+            // Üçüncü Grup
+            item {
+                ProfileItemRow(
+                    navController = navController,
+                    items = listOf(
+                        ProfileItem("Yetkinlikler", R.drawable.skiils, Routes.experiencePage),
+                        ProfileItem("Sosyal Medya", R.drawable.profile, Routes.contactPage)
+                    )
                 )
             }
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.profile),
-                    contentDescription = "Social Media Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  navController.navigate(Routes.contactPage) })
 
-                Text(text = "Sosyal Medya",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
+            // Diğer Grup
+            item {
+                ProfileItemRow(
+                    navController = navController,
+                    items = listOf(
+                        ProfileItem("Referanslar", R.drawable.referenca, Routes.referencePage),
+                        ProfileItem("Ayarlar", R.drawable.setting, Routes.referencePage)
+                    )
                 )
+            }
+
+            // Çıkış Grubu
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(0.25f)
+                            .clickable {
+                                viewModel.signout()
+                                navController.navigate(Routes.loginScreen)
+                            },
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.logout),
+                            contentDescription = "Logout",
+                            modifier = Modifier
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                .padding(16.dp)
+                                .size(48.dp)
+                        )
+                        Text(
+                            text = "Çıkış",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-        ){
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.referenca),
-                    contentDescription = "Referance Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  navController.navigate(Routes.referencePage) })
-
-                Text(text = "Referanslar",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.info),
-                    contentDescription = "Info Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  })
-
-                Text(text = "Dikkat Edilmesi Gerekenler",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-        ){
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.setting),
-                    contentDescription = "Setting Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable {  navController.navigate(Routes.referencePage) })
-
-                Text(text = "Ayarlar",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-            Column(
-                modifier = Modifier.weight(0.25f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                Image(painter = painterResource(R.drawable.logout),
-                    contentDescription = "logout Image",
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
-                        .padding(16.dp)
-                        .size(48.dp)
-                        .clickable { viewModel.signout()
-                            navController.navigate(Routes.loginScreen) })
-
-                Text(text = "Çıkış",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
-            }
-
-        }
-
-
-
     }
-
-
 }
+
+@Composable
+fun ProfileItemRow(
+    navController: NavController,
+    items: List<ProfileItem>
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        items.forEach { item ->
+            Column(
+                modifier = Modifier.weight(0.25f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(item.icon),
+                    contentDescription = item.title,
+                    modifier = Modifier
+                        .background(color = Color.White, shape = RoundedCornerShape(10.dp))
+                        .padding(16.dp)
+                        .size(48.dp)
+                        .clickable { navController.navigate(item.route) }
+                )
+                Text(
+                    text = item.title,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+        }
+    }
+}
+
+data class ProfileItem(val title: String, val icon: Int, val route: String)
+
 
 
 

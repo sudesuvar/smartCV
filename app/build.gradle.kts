@@ -77,6 +77,7 @@ dependencies {
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.3.0")
 
 
 
