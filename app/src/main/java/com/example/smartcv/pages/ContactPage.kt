@@ -1,10 +1,8 @@
 package com.example.smartcv.pages
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,51 +10,54 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.smartcv.R
+import com.example.smartcv.viewmodel.InformationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactPage(navController: NavController){
+fun ContactPage(navController: NavController,  viewModel: InformationViewModel){
+
+    var linkedn by remember { mutableStateOf("") }
+    var github by remember { mutableStateOf("") }
+    val saveStatus by viewModel.saveStatus.observeAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(saveStatus) {
+        saveStatus?.let { success ->
+            val message = if (success) {
+                "Bilgiler başarıyla kaydedildi."
+            } else {
+                "Bilgiler kaydedilirken bir hata oluştu."
+            }
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -92,8 +93,8 @@ fun ContactPage(navController: NavController){
 
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = github,
+                onValueChange = {github = it},
                 label = { Text(text = "Github") },
                 leadingIcon = {
                     Icon(
@@ -111,8 +112,8 @@ fun ContactPage(navController: NavController){
             Spacer(modifier =  Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = linkedn,
+                onValueChange = {linkedn = it},
                 label = { Text(text = "Linkedn") },
                 leadingIcon = {
                     Icon(
@@ -131,8 +132,10 @@ fun ContactPage(navController: NavController){
             Spacer(modifier =  Modifier.height(8.dp))
 
             Button(onClick ={
-                //Log.i("Credential", "Email : $email Password : $password")
-                //navController.navigate(Routes.mainScreen)
+                viewModel.contactInformation(
+                    github= github,
+                   linkedn = linkedn,
+                )
             },  colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.Secondary),
                 contentColor = colorResource(R.color.white)),
@@ -142,11 +145,7 @@ fun ContactPage(navController: NavController){
                     .height(50.dp)) {
                 Text(text = "Kaydet", fontSize = 16.sp)
             }
-
-
         }
-
-
     }
 
 }

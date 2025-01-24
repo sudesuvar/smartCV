@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                     SkillPage(navController)
                 }
                 composable(Routes.contactPage,){
-                    ContactPage(navController)
+                    ContactPage(navController, viewModel = InformationViewModel())
                 }
                 composable(Routes.referencePage,){
                     ReferencePage(navController)

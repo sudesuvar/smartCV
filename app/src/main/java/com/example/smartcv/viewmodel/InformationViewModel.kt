@@ -79,8 +79,6 @@ class InformationViewModel: ViewModel() {
                             }
                         }
                     }
-
-                    // Güncellenmiş dil bilgilerini Firestore'a kaydet
                     val languageData = mapOf("languages" to updatedLanguages)
 
                     firestore.collection("users")
@@ -97,6 +95,31 @@ class InformationViewModel: ViewModel() {
                 }
             } else {
                 Log.e("Auth", "Kullanıcı giriş yapmamış.")
+            }
+        }
+    }
+    fun contactInformation(github: String, linkedn:String){
+        viewModelScope.launch {
+            val userId = auth.currentUser?.uid
+            if (userId != null) {
+                val contactData = mapOf(
+                    "github" to github,
+                    "linkedn" to linkedn
+                )
+                firestore.collection("users")
+                    .document(userId)
+                    .update(contactData)
+                    .addOnSuccessListener {
+                        Log.d("Firestore", "Kullanıcı bilgileri başarıyla güncellendi.")
+                        _saveStatus.value = true
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("Firestore", "Kullanıcı bilgileri güncellenemedi.", e)
+                        _saveStatus.value = false
+                    }
+            } else {
+                Log.e("Auth", "Kullanıcı giriş yapmamış.")
+                _saveStatus.value = false
             }
         }
     }
