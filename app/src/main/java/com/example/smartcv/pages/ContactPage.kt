@@ -42,7 +42,7 @@ import com.example.smartcv.viewmodel.InformationViewModel
 @Composable
 fun ContactPage(navController: NavController,  viewModel: InformationViewModel){
 
-    var linkedn by remember { mutableStateOf("") }
+    var linkedn by remember { mutableStateOf("" ) }
     var github by remember { mutableStateOf("") }
     val saveStatus by viewModel.saveStatus.observeAsState()
     val context = LocalContext.current
